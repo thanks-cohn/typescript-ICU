@@ -1,4 +1,8 @@
-/** Public contracts are provisional for v0.1. All values are JSON serializable. */
+/** Stable Public API v0.1 constants. */
+export const PUBLIC_API_VERSION = "0.1" as const;
+export const SNAPSHOT_VERSION = "0.1" as const;
+
+/** Public API v0.1 contracts. All values are JSON serializable. */
 export type SurfaceId = string;
 
 export interface Rect { x: number; y: number; width: number; height: number }
@@ -48,7 +52,7 @@ export interface Diagnostic {
 }
 
 export interface SnapshotEnvelope {
-  version: "0.1";
+  version: typeof SNAPSHOT_VERSION;
   timestamp: number;
   viewport?: { width: number; height: number; devicePixelRatio?: number };
   environment?: { userAgent?: string; language?: string };

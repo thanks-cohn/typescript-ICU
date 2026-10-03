@@ -1,79 +1,71 @@
 # Perceptual Interface Runtime
 
-A framework-agnostic instrumentation standard for the agentic era.
+A small, framework- and transport-independent runtime for exposing **what the user sees** as structured surfaces, geometry, visibility, changes, and diagnostics. DOM state is evidence rather than a guarantee of perceptual truth.
 
-The goal is to let software expose not only its code and state, but also a durable machine-readable model of what the user is intended to see.
+## What v0.1 provides
 
-The runtime should be installable into an arbitrary project, work with JavaScript and TypeScript, and progressively expose:
+- zero-config discovery of semantic HTML, ARIA roles, and explicit annotations;
+- CSS-pixel, viewport-normalized, parent-normalized, and clipped bounds;
+- visibility/clipping evidence and containment/viewport diagnostics;
+- JSON snapshots, normalized change events, transport-neutral queries, and API discovery;
+- optional capture-provider types without coupling to a screenshot mechanism;
+- built ESM JavaScript and TypeScript declarations for all five packages.
 
-- semantic surface identity,
-- viewport-relative geometry,
-- parent/child relationships,
-- visibility and clipping,
-- overflow and containment,
-- interaction affordances,
-- optional screenshot/capture providers,
-- expected-vs-observed perceptual contracts,
-- and later, 3D scene/camera projection.
+`observe()` returns a `BrowserObserver` whose `snapshot()` describes currently observed semantic surfaces and whose `watch()` reports normalized changes. It does not prove occlusion, readability, or rendered pixels.
 
-The project is repo-name agnostic. Package names are provisional until the standard name stabilizes.
+## Five-minute local start
 
-## Immediate target
+Packages are not published. Clone the repository and use the workspace artifacts:
 
-The first proof should be a browser app where an agent can ask:
-
-```text
-What is visible?
-Where is it?
-What does it mean?
-What is clipped or overflowing?
-What changed after this interaction?
-Give me the rendered region for this surface.
+```sh
+npm ci
+npm run build
+npm test
 ```
 
-and receive structured answers without scraping raw DOM manually.
-
-## Monorepo direction
-
-```text
-packages/
-  core/          schemas, surfaces, contracts, relationships
-  browser/       DOM observation, geometry, visibility
-  diagnostics/   overflow, clipping, containment
-  agent/         query, snapshot, watch
-  capture/       screenshot/capture provider interface
-
-examples/
-  vanilla/
-  typescript/
-
-docs/
-```
-
-See:
-
-- `docs/FOUNDATIONAL_PERCEPTUAL_INTERFACE_STANDARD_PROPOSAL.md`
-- `docs/CODEX_IMPLEMENTATION_PLAN.md`
-- `docs/STANDARDIZATION_CHARTER.md`
-- `docs/API/README.md` — official API documentation
-
-## v0.1 usage
-
-The browser observer is framework-independent and discovers semantic HTML and ARIA surfaces without configuration:
+JavaScript and TypeScript use the same ESM API:
 
 ```js
+import { createQueryApi } from "@perceptual/agent";
 import { observe } from "@perceptual/browser";
+import { diagnose } from "@perceptual/diagnostics";
 
 const observer = observe();
-console.log(observer.snapshot());
-const unwatch = observer.watch((change) => console.log(change));
+const api = createQueryApi(observer, { diagnose });
+console.log(api.describe());
+console.log(api.listSurfaces());
+console.log(api.validate());
+const unwatch = api.watch((change) => console.log(change));
 ```
 
-Applications may add stable meaning with `data-perceptual-id` and `data-perceptual-concept`, or call
-`observer.registerSurface(element, { id, concept })`. Pass the observer to `createQueryApi` for list, lookup,
-concept search, hit testing, validation, and transport-neutral change subscriptions. Capture is optional and is
-represented only by the `CaptureProvider` contract in v0.1.
+Workspace consumers resolve packages through npm workspaces. External local consumers can run `npm pack ./packages/core` (and the packages they need), then install the resulting tarballs together. `npm run test:consumer` automates that clean plain-JavaScript proof and never invokes TypeScript in the consumer.
 
-Geometry uses CSS pixels for `pixelBounds`, viewport-normalized values for `viewportBounds`, and parent-normalized
-values for `parentBounds`. Diagnostics operate on JSON snapshots rather than browser objects. Public contracts remain
-provisional until the standard is stabilized.
+### Vanilla browser, without a bundler
+
+```sh
+npm run build
+npm run example:vanilla
+# open http://127.0.0.1:4173/examples/vanilla/
+```
+
+The example's import map points at built browser ESM. Serving the repository root is intentional; opening the HTML as `file:` is not supported. Inspect `globalThis.runtime.snapshot()` in developer tools.
+
+## Zero config and explicit meaning
+
+Automatic discovery covers common controls, landmarks, media, `[role]`, and annotated elements. Generated ids are local to an observer session. Add durable meaning with HTML:
+
+```html
+<section data-perceptual-id="upload" data-perceptual-concept="upload-panel">
+  <button data-perceptual-id="upload.add-child">Add child</button>
+</section>
+```
+
+Or register an element directly:
+
+```js
+observer.registerSurface(element, { id: "upload.add-child", concept: "button" });
+```
+
+## Status and boundaries
+
+The exact Public API v0.1 contract is in [`docs/API/PUBLIC_API_V0_1.md`](docs/API/PUBLIC_API_V0_1.md). Packages remain private and unpublished; package names are provisional, and the absent repository license blocks public release. There is no built-in capture, MCP/HTTP server, runtime schema validator, vision/occlusion verification, calibration, framework adapter, canvas/3D provider, or native bridge yet.
