@@ -55,3 +55,24 @@ See:
 - `docs/FOUNDATIONAL_PERCEPTUAL_INTERFACE_STANDARD_PROPOSAL.md`
 - `docs/CODEX_IMPLEMENTATION_PLAN.md`
 - `docs/STANDARDIZATION_CHARTER.md`
+
+## v0.1 usage
+
+The browser observer is framework-independent and discovers semantic HTML and ARIA surfaces without configuration:
+
+```js
+import { observe } from "@perceptual/browser";
+
+const observer = observe();
+console.log(observer.snapshot());
+const unwatch = observer.watch((change) => console.log(change));
+```
+
+Applications may add stable meaning with `data-perceptual-id` and `data-perceptual-concept`, or call
+`observer.registerSurface(element, { id, concept })`. Pass the observer to `createQueryApi` for list, lookup,
+concept search, hit testing, validation, and transport-neutral change subscriptions. Capture is optional and is
+represented only by the `CaptureProvider` contract in v0.1.
+
+Geometry uses CSS pixels for `pixelBounds`, viewport-normalized values for `viewportBounds`, and parent-normalized
+values for `parentBounds`. Diagnostics operate on JSON snapshots rather than browser objects. Public contracts remain
+provisional until the standard is stabilized.
