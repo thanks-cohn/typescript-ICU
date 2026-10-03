@@ -278,3 +278,7 @@ Even if names are refined during Public API v0.1 stabilization, the durable conc
 - and the principle that DOM state is evidence rather than the whole of user-visible truth.
 
 The next run should stabilize these ideas without prematurely freezing implementation accidents.
+
+---
+
+> **Historical note:** This file records the pre-hardening state at the commit named above. The normative shipped contract is now [PUBLIC_API_V0_1.md](PUBLIC_API_V0_1.md).

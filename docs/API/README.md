@@ -1,35 +1,24 @@
 # ICU API
 
-This directory is the **official public API documentation home** for ICU / the Perceptual Interface Runtime.
+This directory is the official public API documentation home for ICU / the Perceptual Interface Runtime. The contract is framework-, transport-, vendor-, and repository-name-independent.
 
-The long-term API goal is a framework-, transport-, vendor-, and repository-name-independent contract for exposing what a user can actually perceive and interact with.
+## Current contract
 
-## Current status
+- [Public API v0.1](PUBLIC_API_V0_1.md) is the normative contract shipped by package version `0.1.0`.
+- [Current API v0.1](CURRENT_API_V0_1.md) is the historical pre-hardening inventory and is not the current normative reference.
 
-The implementation already has a real v0.1 API surface across the `core`, `browser`, `diagnostics`, `agent`, and `capture` packages, but the contracts are currently marked provisional and the workspace packages are not yet early-adopter-ready.
-
-The current implemented surface is documented in:
-
-- [CURRENT_API_V0_1.md](CURRENT_API_V0_1.md)
-
-The next Codex run is tasked with turning that implemented surface into a deliberately versioned Public API v0.1 and updating this directory to match what is actually shipped.
+Public API version, serialized snapshot version, and package version are deliberately independent. The current values and evolution policy are defined in the public API reference.
 
 ## Documentation rule
 
-Any change to public API names, types, serialized snapshot shape, diagnostics, query behavior, versioning, package exports, capture contracts, or adapter obligations must update the relevant documentation in `docs/API/` in the same coherent change.
-
-> **Change the API, change `docs/API/`.**
-
-Planning documents and handoffs do not replace the official API reference.
+Any change to public names, types, serialized snapshot shape, diagnostics, query behavior, versioning, package exports, capture contracts, or adapter obligations must update this directory in the same coherent change: **change the API, change `docs/API/`.** Planning documents and handoffs do not replace this reference.
 
 ## Authority
 
-The intended authority order is:
+1. perceptual-interface standard and standardization charter;
+2. documented serialized contracts and API semantics;
+3. conformance/behavior tests;
+4. package implementations;
+5. transports and framework adapters.
 
-1. the perceptual-interface standard and standardization charter,
-2. documented public serialized contracts and API semantics,
-3. conformance/behavior tests,
-4. package implementations,
-5. transports and framework-specific adapters.
-
-No transport such as MCP, HTTP, WebSocket, extension messaging, or Electron IPC should define ICU semantics.
+No MCP, HTTP, WebSocket, extension, Electron IPC, browser, or vendor transport defines ICU semantics.

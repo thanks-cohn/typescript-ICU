@@ -1,16 +1,19 @@
 {
   "name": "perceptual-interface-workspace",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "workspaces": [
     "packages/*",
     "examples/*"
   ],
   "scripts": {
-    "build": "tsc --outDir dist",
+    "build": "npm run clean && tsc -p packages/core/tsconfig.build.json && tsc -p packages/browser/tsconfig.build.json && tsc -p packages/diagnostics/tsconfig.build.json && tsc -p packages/agent/tsconfig.build.json && tsc -p packages/capture/tsconfig.build.json",
+    "clean": "rm -rf packages/*/dist",
     "test": "vitest run",
-    "check": "tsc --noEmit"
+    "check": "tsc --noEmit",
+    "test:consumer": "bash scripts/consumer-smoke.sh",
+    "example:vanilla": "node scripts/serve.mjs"
   },
   "engines": {
     "node": ">=20"
