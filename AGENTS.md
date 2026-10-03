@@ -63,3 +63,9 @@ without project-specific logic.
 - Add tests for geometry edge cases before adding convenience APIs.
 - Public contracts must be documented.
 - Keep all names provisional unless explicitly marked stable.
+
+## API documentation
+
+- Official public API documentation lives under `docs/API/`.
+- Any change to public API names, serialized snapshot shape, diagnostics, query behavior, API versioning, package exports, capture contracts, or adapter obligations must update the relevant `docs/API/` documentation in the same coherent change.
+- Planning documents and handoffs do not replace the official API reference.

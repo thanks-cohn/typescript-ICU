@@ -55,6 +55,7 @@ See:
 - `docs/FOUNDATIONAL_PERCEPTUAL_INTERFACE_STANDARD_PROPOSAL.md`
 - `docs/CODEX_IMPLEMENTATION_PLAN.md`
 - `docs/STANDARDIZATION_CHARTER.md`
+- `docs/API/README.md` — official API documentation
 
 ## v0.1 usage
 
