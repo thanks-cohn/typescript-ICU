@@ -1,0 +1,12 @@
+{
+  "name": "@perceptual/browser",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "dependencies": {
+    "@perceptual/core": "0.0.0"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  }
+}
